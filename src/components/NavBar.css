@@ -1,0 +1,53 @@
+/* Navbar.css */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* spacing between logo and title */
+}
+
+.logo {
+  height: 40px; /* adjust size as needed */
+  width: auto;
+}
+/* Basic navbar container */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f8f9fa;
+  }
+  
+  /* Navbar list */
+  .navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+  }
+  
+  /* Navbar links */
+  .navbar a {
+    text-decoration: none;
+    color: #333;
+  }
+  
+  /* Button in navbar (if any) */
+  .nav-button {
+    background: none;
+    border: none;
+    color: #333;
+    font-size: inherit;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+  }
+  
+  .nav-button:hover {
+    color: #666;
+  }
+  
+  
+  

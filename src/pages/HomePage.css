@@ -1,0 +1,105 @@
+/* HomePage.css or ContentLayout.css */
+
+/* The grid of sections in a single row */
+.content-grid {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 40px 20px;
+  flex-wrap: nowrap; /* Prevent wrapping to new line */
+}
+
+/* The modern button style used in homepage or global */
+.modern-button {
+  background-color: transparent;
+  color: #333;
+  border: 2px solid #333;
+  padding: 15px 30px;
+  border-radius: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.modern-button:hover {
+  background-color: #ff0000;
+  color: #fff;
+  border-color: #ff0000;
+}
+
+.button-sections {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  padding: 40px;
+  flex-wrap: wrap;
+}
+
+.button-sections section {
+  flex: 1;
+  min-width: 200px;
+  max-width: 25%; /* Limit width to fit 4 sections in a row */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Add red underline on hover for h2 titles */
+.button-sections section h2 {
+  position: relative;
+  cursor: pointer;
+}
+
+.button-sections section h2::after {
+  content: "";
+  position: absolute;
+  bottom: -5px; /* slightly below text */
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: red;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s ease;
+}
+
+.button-sections section h2:hover::after {
+  transform: scaleX(1);
+}
+
+/* Make sure buttons are the same width within each section */
+.button-sections .modern-button {
+  width: 80%;
+  margin-top: auto; /* Push buttons to bottom of section */
+}
+
+.black-button {
+  background-color: transparent; /* No fill */
+  color: #333; /* Dark text color for visibility */
+  border: 2px solid #333; /* Border remains visible */
+  padding: 10px 20px;
+  font-size: 16px;
+  text-align: center;
+  display: inline-block;
+  transition: background-color 0.3s, color 0.3s;
+  margin-top: 12px;
+}
+
+.black-button:hover {
+  background-color: #000; /* Fill on hover */
+  color: #fff; /* Change text color to white for contrast */
+  border-color: #000;
+}
+
+/* Footer styling */
+footer {
+  text-align: center;
+  padding: 10px;
+  background-color: #f8f9fa;
+}
+
+
