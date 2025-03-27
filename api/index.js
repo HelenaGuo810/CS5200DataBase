@@ -36,7 +36,6 @@ app.post('/student/register', async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-
     const student = await prisma.student.create({
       data: {
         FirstName: firstName,
@@ -47,7 +46,6 @@ app.post('/student/register', async (req, res) => {
         Track: track
       }
     });
-
     const { Password: _, ...studentWithoutPassword } = student;
     res.status(201).json(studentWithoutPassword);
   } catch (error) {
@@ -70,7 +68,6 @@ app.post('/mentor/register', async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-
     const mentor = await prisma.mentor.create({
       data: {
         FirstName: firstName,
@@ -81,7 +78,6 @@ app.post('/mentor/register', async (req, res) => {
         Availability: availability
       }
     });
-
     const { Password: _, ...mentorWithoutPassword } = mentor;
     res.status(201).json(mentorWithoutPassword);
   } catch (error) {
@@ -93,7 +89,6 @@ app.post('/mentor/register', async (req, res) => {
 // log in as student
 app.post('/student/login', async (req, res) => {
   const { email, password } = req.body;
-
   try {
     const student = await prisma.student.findUnique({
       where: { Email: email }
@@ -104,7 +99,6 @@ app.post('/student/login', async (req, res) => {
     }
 
     const passwordValid = await bcrypt.compare(password, student.Password);
-
     if (!passwordValid) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
@@ -118,7 +112,6 @@ app.post('/student/login', async (req, res) => {
       JWT_SECRET,
       { expiresIn: '24h' }
     );
-
     const { Password: _, ...studentWithoutPassword } = student;
     res.json({
       user: studentWithoutPassword,
@@ -144,9 +137,7 @@ app.post('/mentor/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-
     const passwordValid = await bcrypt.compare(password, mentor.Password);
-
     if (!passwordValid) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
@@ -183,14 +174,14 @@ function authenticateToken(req, res, next) {
 
   jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) {
-      return res.status(403).json({ error: 'Invalid or expired token' });
+      return res.status(403).json({ error: 'Invalid/expired token' });
     }
     req.user = user;
     next();
   });
 }
 
-// get student user info
+// fetch student user info
 app.get('/student/me', authenticateToken, async (req, res) => {
   if (req.user.role !== 'STUDENT') {
     return res.status(403).json({ error: 'Access denied' });
@@ -212,7 +203,7 @@ app.get('/student/me', authenticateToken, async (req, res) => {
   }
 });
 
-// get mentor user info
+// fetch mentor user info
 app.get('/mentor/me', authenticateToken, async (req, res) => {
   if (req.user.role !== 'MENTOR') {
     return res.status(403).json({ error: 'Access denied' });
@@ -246,7 +237,21 @@ app.put('/student/update', authenticateToken, async (req, res) => {
     if (track !== undefined) updateData.Track = track;
     if (email !== undefined) updateData.Email = email;
 
+    // if (password) {
+    //   updateData.Password = await bcrypt.hash(password, 10);
+    // }
+
+    // updated: new password could not be the same as the old one
     if (password) {
+      const currentStudent = await prisma.student.findUnique({
+        where: { StudentID: req.user.id }
+      });
+
+      const isSamePassword = await bcrypt.compare(password, currentStudent.Password);
+      if (isSamePassword) {
+        return res.status(400).json({ error: 'New password must be different from the old password' });
+      }
+
       updateData.Password = await bcrypt.hash(password, 10);
     }
 
@@ -264,6 +269,54 @@ app.put('/student/update', authenticateToken, async (req, res) => {
   } catch (error) {
     console.error('Student update error:', error);
     res.status(500).json({ error: 'Failed to update student information' });
+  }
+});
+
+// update mentor user info
+app.put('/mentor/update', authenticateToken, async (req, res) => {
+  if (req.user.role !== 'MENTOR') {
+    return res.status(403).json({ error: 'Access denied' });
+  }
+
+  const { firstName, lastName, specialization, availability, password, email } = req.body;
+  try {
+    const updateData = {};
+
+    if (firstName !== undefined) updateData.FirstName = firstName;
+    if (lastName !== undefined) updateData.LastName = lastName;
+    if (specialization !== undefined) updateData.Specialization = specialization;
+    if (availability !== undefined) updateData.Availability = availability;
+    if (email !== undefined) updateData.Email = email;
+
+    // if (password) {
+    //   updateData.Password = await bcrypt.hash(password, 10);
+    // }
+    // updated: new password could not be the same as the old one
+    if (password) {
+      const currentMentor = await prisma.mentor.findUnique({
+        where: { MentorID: req.user.id }
+      });
+
+      const isSamePassword = await bcrypt.compare(password, currentMentor.Password);
+      if (isSamePassword) {
+        return res.status(400).json({ error: 'New password must be different from the old password' });
+      }
+      updateData.Password = await bcrypt.hash(password, 10);
+    }
+
+    if (Object.keys(updateData).length === 0) {
+      return res.status(400).json({ error: 'No data provided for update' });
+    }
+    const updatedMentor = await prisma.mentor.update({
+      where: { MentorID: req.user.id },
+      data: updateData
+    });
+
+    const { Password: _, ...mentorWithoutPassword } = updatedMentor;
+    res.json(mentorWithoutPassword);
+  } catch (error) {
+    console.error('Mentor update error:', error);
+    res.status(500).json({ error: 'Failed to update mentor information' });
   }
 });
 
