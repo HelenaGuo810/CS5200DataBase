@@ -320,7 +320,52 @@ app.put('/mentor/update', authenticateToken, async (req, res) => {
   }
 });
 
+app.get('/appointment', authenticateToken, async (req, res) => { 
+  try {
+    const appointments = await prisma.appointment.findMany({
+      include: {
+        Student: true,
+        Mentor: true
+      }
+    });
+    res.json(appointments);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch appointments' });
+  }
+});
 
+app.post('/appointment', authenticateToken, async (req, res) => { 
+  const { StudentID, MentorID, Date, Time } = req.body;
+
+  try {
+    const appointment = await prisma.appointment.create({
+      data: {
+        StudentID,
+        MentorID,
+        Date,
+        Time
+      }
+    });
+    res.status(201).json(appointment);
+  } catch (err) {
+    res.status(400).json({ error: 'Failed to create appointment' });
+  }
+});
+
+app.delete('/appointment/:id', authenticateToken, async (req, res) => { 
+  const { id } = req.params;
+
+  try {
+    await prisma.appointment.delete({
+      where: {
+        AppointmentID: parseInt(id)
+      }
+    });
+    res.json({ message: 'Appointment deleted' });
+  } catch (err) {
+    res.status(404).json({ error: 'Appointment not found' });
+  }
+});
 
 app.listen(8000, () => {
   console.log("Server running on http://localhost:8000 🎉 🚀");
