@@ -30,7 +30,7 @@ const Login = () => {
       console.log("Logging in with:", { email, password });
       alert("Login successful! Redirecting to student dashboard...");
       // Redirect to dashboard or portfolio page
-      window.location.href = "/portfolio/dashboard";
+      window.open("http://localhost:57516/portfolio", "_blank");
     } else {
       // Register logic would go here
       console.log("Registering with:", { email, password });

@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "../components/NavBar";
+import Navbar from "../routes/Navigation/NavBar";
 import HeroSection from "../components/HeroSection";
 import Footer from "../components/footer/Footer";
 import "./HomePage.css";
@@ -20,7 +20,7 @@ const HomePage = () => {
           <p>Manage your work, set goals, and track your progress.</p>
           <button
             className="modern-button black-button"
-            onClick={() => window.open("http://localhost:3000/login", "_blank")}
+            onClick={() => window.open("http://localhost:57516/login", "_blank")}
           >
             Student Login
           </button>

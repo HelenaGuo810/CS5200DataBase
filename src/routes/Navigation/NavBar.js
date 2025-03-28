@@ -1,7 +1,7 @@
 import React from "react";
 import { Info, Book, Image, Calendar } from "react-feather";
-import "./NavBar.css"; 
-import tabLogo from "../assets/static/logo.png";
+import "../../routes/Navigation/NavBar.css"; 
+import tabLogo from "../../assets/static/logo.png";
 
 export default function Navbar() {
   return (
@@ -32,9 +32,13 @@ export default function Navbar() {
             </button>
           </li>
           <li>
-            <a href="#contact">
+          <button
+              onClick={() => window.open("http://localhost:3000/contact", "_blank")}
+              className="nav-button"
+              aria-label="Open Contact Us in new tab"
+            >
               <Book size={16} /> Contact Us
-            </a>
+            </button>
           </li>
         </ul>
       </nav>
