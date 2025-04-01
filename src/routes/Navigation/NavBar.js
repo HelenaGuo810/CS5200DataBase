@@ -18,27 +18,19 @@ export default function Navbar() {
             </a>
           </li>
           <li>
-            <a href="#login">
+            <a href="/login">
               <Image size={16} /> Login
             </a>
           </li>
           <li>
-            <button
-              onClick={() => window.open("/forum", "_blank")}
-              className="nav-button"
-              aria-label="Open forum in new tab"
-            >
+            <a href="/forum" className="nav-button">
               <Calendar size={16} /> Forum
-            </button>
+            </a>
           </li>
           <li>
-          <button
-              onClick={() => window.open("http://localhost:3000/contact", "_blank")}
-              className="nav-button"
-              aria-label="Open Contact Us in new tab"
-            >
+            <a href="/contact" className="nav-button">
               <Book size={16} /> Contact Us
-            </button>
+            </a>
           </li>
         </ul>
       </nav>

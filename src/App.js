@@ -6,6 +6,7 @@ import './App.css';
 import HomePage from './pages/HomePage';
 import Forum from './pages/Forum/Forum';
 import { Login } from './pages/Portfolio';
+import Dashboard from './pages/Dashboard/Dashboard';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/forum" element={<Forum />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </Router>
   );

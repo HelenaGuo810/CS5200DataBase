@@ -20,7 +20,7 @@ const HomePage = () => {
           <p>Manage your work, set goals, and track your progress.</p>
           <button
             className="modern-button black-button"
-            onClick={() => window.open("http://localhost:57516/login", "_blank")}
+            onClick={() => window.location.href = "/login"}
           >
             Student Login
           </button>
@@ -31,7 +31,7 @@ const HomePage = () => {
           <p>Internal students can book 1-1 appointments with our tutors.</p>
           <button
             className="modern-button black-button"
-            onClick={() => window.open("http://localhost:3000/appointment", "_blank")}
+            onClick={() => window.location.href = "/appointment"}
           >
             Appoint Now
           </button>
@@ -42,7 +42,7 @@ const HomePage = () => {
           <p>The forum for application is now open to the public!</p>
           <button
             className="modern-button black-button"
-            onClick={() => window.open("http://localhost:3000/forum", "_blank")}
+            onClick={() => window.location.href = "/forum"}
           >
             Visit Community
           </button>
@@ -53,7 +53,7 @@ const HomePage = () => {
           <p>Explore study cases, stock images, and video tutorials.</p>
           <button
             className="modern-button black-button"
-            onClick={() => window.open("http://localhost:3000/resources", "_blank")}
+            onClick={() => window.location.href = "/resources"}
           >
             Explore Resources
           </button>

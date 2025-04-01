@@ -1,15 +1,19 @@
 import React, { useState } from "react";
-// import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
+// Backend API base URL
+const API_BASE_URL = 'http://localhost:8000'; // Change this to the URL where your backend is running
+
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("lucas@example.com");
+  const [password, setPassword] = useState("test1234");
   const [verifyPassword, setVerifyPassword] = useState("");
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     // Basic validation
@@ -24,19 +28,70 @@ const Login = () => {
       return;
     }
     
-    // For demonstration - in a real app, you'd call an authentication service
-    if (isLogin) {
-      // Login logic would go here
-      console.log("Logging in with:", { email, password });
-      alert("Login successful! Redirecting to student dashboard...");
-      // Redirect to dashboard or portfolio page
-      window.open("http://localhost:57516/portfolio", "_blank");
-    } else {
-      // Register logic would go here
-      console.log("Registering with:", { email, password });
-      alert("Registration successful! Please check your email for verification.");
-      setIsLogin(true);
-      setVerifyPassword("");
+    try {
+      console.log("Submitting form:", { email, password, isLogin });
+      
+      if (isLogin) {
+        // Login logic
+        console.log("Attempting login with:", { email, password });
+        
+        const response = await fetch(`${API_BASE_URL}/student/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+        });
+
+        console.log("Login response status:", response.status);
+        const data = await response.json();
+        console.log("Login response data:", data);
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Login failed');
+        }
+
+        // Store the token and user data
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('userData', JSON.stringify(data.user));
+        localStorage.setItem('userRole', data.role);
+
+        // Redirect to dashboard
+        navigate('/dashboard');
+      } else {
+        // Register logic
+        console.log("Attempting registration with:", { email, password });
+        
+        const response = await fetch(`${API_BASE_URL}/student/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            firstName: email.split('@')[0], // Using email prefix as first name for demo
+            lastName: 'User', // Default last name for demo
+            email,
+            password,
+            targetSchool: 'Default School',
+            track: 'Default Track'
+          }),
+        });
+
+        console.log("Registration response status:", response.status);
+        const data = await response.json();
+        console.log("Registration response data:", data);
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Registration failed');
+        }
+
+        alert("Registration successful! Please login.");
+        setIsLogin(true);
+        setVerifyPassword("");
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      setError(error.message || 'Failed to connect to server. Please try again.');
     }
   };
 
