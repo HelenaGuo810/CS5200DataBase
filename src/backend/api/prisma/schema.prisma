@@ -51,3 +51,15 @@ model Appointment {
 //   Email        String    @unique
 //   Password     String
 // }
+
+model Portfolio {
+  id          Int      @id @default(autoincrement())
+  key         String   @unique
+  name        String
+  date        String
+  image       String
+  category    String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

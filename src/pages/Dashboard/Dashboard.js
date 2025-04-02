@@ -147,7 +147,7 @@ const Dashboard = () => {
         <div className="dashboard-actions">
           <h2>Quick Actions</h2>
           <div className="action-buttons">
-            <button className="action-button">View Appointments</button>
+            <button className="action-button" onClick={() => navigate('/appointment')}>View Appointments</button>
             <button className="action-button">Update Profile</button>
             <button className="action-button">View Portfolio</button>
           </div>

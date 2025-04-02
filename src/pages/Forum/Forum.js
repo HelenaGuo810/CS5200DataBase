@@ -1,159 +1,139 @@
 // Forum.js
-import React from 'react';
+import React, { useState } from 'react';
+import './Forum.css';
+import userLogo from '../../images/userlogo.png';
 
 export default function Forum() {
+  const [activeCategory, setActiveCategory] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [newPostContent, setNewPostContent] = useState('');
+
+  const categories = [
+    { id: 'all', name: 'All Topics', count: 0 },
+    { id: 'application', name: 'Application', count: 124 },
+    { id: 'schools', name: 'Schools', count: 80 },
+    { id: 'portfolio', name: 'Portfolio', count: 24 },
+    { id: 'resources', name: 'Resources', count: 48 },
+    { id: 'tutorials', name: 'Tutorials', count: 67 },
+    { id: 'other', name: 'Other', count: 16 },
+  ];
+
+  const handleNewPost = (e) => {
+    e.preventDefault();
+    // TODO: Implement post creation logic
+    setNewPostContent('');
+  };
+
   return (
-    <div className="max-w-screen-lg mx-auto px-4 py-6 font-sans">
-      {/* Header or banner */}
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl md:text-2xl font-bold">Vertex Studio Forum</h2>
-        
-        <div className="flex items-center space-x-4">
-          <input
-            type="text"
-            className="border border-gray-300 rounded-full py-2 px-4 outline-none"
-            placeholder="Chats, messages and more"
-          />
-          <button className="bg-black text-white rounded-full px-4 py-2">
-            New thread
-          </button>
-          <img
-            src="profile.jpg"
-            alt="Profile"
-            className="w-9 h-9 rounded-full object-cover"
-          />
+    <div className="forum-container">
+      {/* Header Section */}
+      <header className="forum-header">
+        <div className="header-content">
+          <h1>Vertex Studio Forum</h1>
+          <div className="header-actions">
+            <div className="search-box">
+              <input
+                type="text"
+                placeholder="Search discussions..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+            <button className="new-post-btn">Create New Post</button>
+          </div>
         </div>
-      </div>
+      </header>
 
-      {/* Prompt input */}
-      <div className="mb-6">
-        <input
-          type="text"
-          className="w-full border border-gray-300 rounded-full py-3 px-4 placeholder-gray-500 outline-none"
-          placeholder="Tell everyone what are you working on..."
-        />
-      </div>
-
-      {/* Categories */}
-      <div className="flex flex-wrap gap-3 mb-8">
-        <div className="flex flex-col items-center bg-gray-100 rounded-lg p-4 w-[120px] text-center cursor-pointer">
-          <span className="font-semibold">Crypto</span>
-          <span className="text-sm text-gray-500">124 threads</span>
-        </div>
-        <div className="flex flex-col items-center bg-gray-100 rounded-lg p-4 w-[120px] text-center cursor-pointer">
-          <span className="font-semibold">NFTs</span>
-          <span className="text-sm text-gray-500">80 threads</span>
-        </div>
-        <div className="flex flex-col items-center bg-gray-100 rounded-lg p-4 w-[120px] text-center cursor-pointer">
-          <span className="font-semibold">Finance</span>
-          <span className="text-sm text-gray-500">24 threads</span>
-        </div>
-        <div className="flex flex-col items-center bg-gray-100 rounded-lg p-4 w-[120px] text-center cursor-pointer">
-          <span className="font-semibold">Wall Street</span>
-          <span className="text-sm text-gray-500">22 threads</span>
-        </div>
-        <div className="flex flex-col items-center bg-gray-100 rounded-lg p-4 w-[120px] text-center cursor-pointer">
-          <span className="font-semibold">Houses</span>
-          <span className="text-sm text-gray-500">67 threads</span>
-        </div>
-        <div className="flex flex-col items-center bg-gray-100 rounded-lg p-4 w-[120px] text-center cursor-pointer">
-          <span className="font-semibold">Trading</span>
-          <span className="text-sm text-gray-500">48 threads</span>
-        </div>
-        <div className="flex flex-col items-center bg-gray-100 rounded-lg p-4 w-[120px] text-center cursor-pointer">
-          <span className="font-semibold">Sport Cars</span>
-          <span className="text-sm text-gray-500">16 threads</span>
-        </div>
-        <div className="flex flex-col items-center bg-gray-100 rounded-lg p-4 w-[120px] text-center cursor-pointer">
-          <span className="font-semibold">All categories</span>
-          <span className="text-sm text-gray-500">12 more</span>
-        </div>
-      </div>
-
-      {/* Popular threads */}
-      <div className="space-y-6">
-        <h3 className="text-lg font-semibold">Popular threads</h3>
-        
-        {/* Thread item */}
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <img
-              src="elon.jpg"
-              alt="Elon"
-              className="w-9 h-9 rounded-full object-cover"
-            />
-            <div className="flex flex-col text-sm">
-              <strong>Elon Musk</strong>
-              <span className="text-gray-500">Today, 4:45 PM</span>
+      <div className="forum-content">
+        {/* Sidebar with Categories */}
+        <aside className="forum-sidebar">
+          <div className="categories-section">
+            <h2>Categories</h2>
+            <div className="categories-list">
+              {categories.map((category) => (
+                <button
+                  key={category.id}
+                  className={`category-item ${activeCategory === category.id ? 'active' : ''}`}
+                  onClick={() => setActiveCategory(category.id)}
+                >
+                  <span className="category-name">{category.name}</span>
+                  <span className="category-count">{category.count}</span>
+                </button>
+              ))}
             </div>
           </div>
-          <p className="text-sm mb-2">
-            Shiba Inu to the moon 🚀🌖
-          </p>
-          <div className="flex items-center space-x-4 text-sm text-gray-600 mb-2">
-            <span>❤️ 954 likes</span>
-            <span>💬 115 replies</span>
-          </div>
-          <button className="bg-gray-100 border border-gray-300 text-sm rounded-md px-3 py-1">
-            Reply
-          </button>
+        </aside>
 
-          {/* Nested reply */}
-          <div className="ml-10 mt-4 border-l-2 border-gray-100 pl-4">
-            <div className="flex items-center gap-2 mb-2">
-              <img
-                src="andrew.jpg"
-                alt="Andrew"
-                className="w-8 h-8 rounded-full object-cover"
+        {/* Main Content Area */}
+        <main className="forum-main">
+          {/* New Post Form */}
+          <section className="new-post-section">
+            <form onSubmit={handleNewPost} className="new-post-form">
+              <textarea
+                placeholder="Share your thoughts..."
+                value={newPostContent}
+                onChange={(e) => setNewPostContent(e.target.value)}
+                rows="3"
               />
-              <div className="flex flex-col text-sm">
-                <strong>Andrew Tate</strong>
-                <span className="text-gray-500">Today, 4:45 PM</span>
+              <div className="post-actions">
+                <div className="post-options">
+                  <button type="button" className="option-btn">
+                    <span>📷</span> Image
+                  </button>
+                  <button type="button" className="option-btn">
+                    <span>🔗</span> Link
+                  </button>
+                </div>
+                <button type="submit" className="submit-post-btn">
+                  Post
+                </button>
+              </div>
+            </form>
+          </section>
+
+          {/* Posts List */}
+          <section className="posts-section">
+            <div className="posts-header">
+              <h2>Recent Discussions</h2>
+              <div className="sort-options">
+                <button className="sort-btn active">Latest</button>
+                <button className="sort-btn">Popular</button>
+                <button className="sort-btn">Trending</button>
               </div>
             </div>
-            <p className="text-sm mb-2">That’s right my friend</p>
-            <div className="flex items-center space-x-4 text-sm text-gray-600 mb-2">
-              <span>❤️ 42 likes</span>
-              <span>💬 12 replies</span>
+
+            {/* Post Items */}
+            <div className="posts-list">
+              {/* Example Post */}
+              <article className="post-card">
+                <div className="post-header">
+                  <div className="post-author">
+                    <img src={userLogo} alt="Author" className="author-avatar" />
+                    <div className="author-info">
+                      <h3>John Doe</h3>
+                      <span className="post-time">2 hours ago</span>
+                    </div>
+                  </div>
+                  <div className="post-category">Urban Design</div>
+                </div>
+                <div className="post-content">
+                  <h2>What are your thoughts on the latest Harvard GSD landscape project?</h2>
+                  <p>I've been following the recent market trends and would love to hear your perspectives...</p>
+                </div>
+                <div className="post-footer">
+                  <div className="post-stats">
+                    <span>👁️ 1.2k views</span>
+                    <span>💬 24 replies</span>
+                    <span>❤️ 156 likes</span>
+                  </div>
+                  <button className="reply-btn">Reply</button>
+                </div>
+              </article>
+
+              {/* More posts would be rendered here */}
             </div>
-            <button className="bg-gray-100 border border-gray-300 text-sm rounded-md px-3 py-1">
-              Reply
-            </button>
-          </div>
-
-          <button className="mt-3 text-blue-600 text-sm">
-            See other 105 replies
-          </button>
-        </div>
-
-        <h4 className="text-sm font-semibold text-gray-600">
-          Yesterday, 07 May
-        </h4>
-
-        {/* Another thread */}
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <img
-              src="morpheus.jpg"
-              alt="Morpheus"
-              className="w-9 h-9 rounded-full object-cover"
-            />
-            <div className="flex flex-col text-sm">
-              <strong>Morpheus</strong>
-              <span className="text-gray-500">Yesterday, 1:13 PM</span>
-            </div>
-          </div>
-          <p className="text-sm mb-2">
-            Can someone explain to me what crypto and NFTs are? ...
-          </p>
-          <div className="flex items-center space-x-4 text-sm text-gray-600 mb-2">
-            <span>❤️ 954 likes</span>
-            <span>💬 115 replies</span>
-          </div>
-          <button className="bg-gray-100 border border-gray-300 text-sm rounded-md px-3 py-1">
-            Reply
-          </button>
-        </div>
+          </section>
+        </main>
       </div>
     </div>
   );

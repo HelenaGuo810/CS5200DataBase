@@ -1,0 +1,133 @@
+.resources-container {
+  padding: 2rem 0;
+}
+
+.resources-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.resources-header h1 {
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 1rem;
+}
+
+.search-filter-section {
+  margin-bottom: 2rem;
+}
+
+.category-chips {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.project-card {
+  height: 480px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  margin: 0 !important;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.project-image {
+  height: 240px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.project-card:hover .project-image {
+  transform: scale(1.05);
+}
+
+.project-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.MuiCardContent-root {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  height: 240px;
+  overflow: hidden;
+}
+
+.MuiCardContent-root h2 {
+  margin-bottom: 0.25rem;
+}
+
+.MuiCardContent-root p {
+  margin-bottom: 0.25rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  line-clamp: 5;
+  -webkit-box-orient: vertical;
+  box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 7.5em;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .resources-container {
+    padding: 1rem;
+  }
+
+  .resources-header {
+    margin-bottom: 2rem;
+  }
+
+  .category-chips {
+    justify-content: center;
+  }
+
+  .project-card {
+    margin-bottom: 1rem;
+  }
+}
+
+/* Material-UI Overrides */
+.MuiCard-root {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.MuiChip-root {
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.MuiTextField-root {
+  background-color: white;
+  border-radius: 8px;
+}
+
+.MuiIconButton-root {
+  color: #666;
+  transition: color 0.2s ease-in-out;
+}
+
+.MuiIconButton-root:hover {
+  color: #3b82f6;
+}
+
+.MuiGrid-item {
+  padding: 0 !important;
+} 
