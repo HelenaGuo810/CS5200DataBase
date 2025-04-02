@@ -336,19 +336,83 @@ app.get('/appointment', authenticateToken, async (req, res) => {
 
 app.post('/appointment', authenticateToken, async (req, res) => { 
   const { StudentID, MentorID, Date, Time } = req.body;
-
+  
+  // Log the received data
+  console.log('Appointment request data:', { StudentID, MentorID, Date, Time });
+  
+  // Validate data
+  if (!StudentID || !MentorID || !Date || !Time) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+  
+  // Parse ID fields to ensure they're integers
   try {
+    const parsedStudentID = parseInt(StudentID);
+    const parsedMentorID = parseInt(MentorID);
+    
+    if (isNaN(parsedStudentID) || isNaN(parsedMentorID)) {
+      return res.status(400).json({ error: 'Student ID and Mentor ID must be valid numbers' });
+    }
+    
+    // Check if the student exists in the database
+    const existingStudent = await prisma.student.findUnique({
+      where: { StudentID: parsedStudentID }
+    });
+    
+    if (!existingStudent) {
+      return res.status(400).json({ error: `Student with ID ${parsedStudentID} not found` });
+    }
+    
+    // Check if the mentor exists in the database
+    const existingMentor = await prisma.mentor.findUnique({
+      where: { MentorID: parsedMentorID }
+    });
+    
+    if (!existingMentor) {
+      return res.status(400).json({ error: `Mentor with ID ${parsedMentorID} not found` });
+    }
+    
+    // Create the appointment
     const appointment = await prisma.appointment.create({
       data: {
-        StudentID,
-        MentorID,
+        StudentID: parsedStudentID,
+        MentorID: parsedMentorID,
         Date,
         Time
       }
     });
+    
+    console.log('Appointment created successfully:', appointment);
     res.status(201).json(appointment);
   } catch (err) {
-    res.status(400).json({ error: 'Failed to create appointment' });
+    console.error('Error creating appointment:', err);
+    
+    // Provide more specific error messages based on the error type
+    if (err.code === 'P2002') {
+      res.status(400).json({ error: 'This appointment already exists' });
+    } else if (err.code === 'P2003') {
+      res.status(400).json({ error: 'Invalid Student ID or Mentor ID' });
+    } else {
+      res.status(400).json({ error: `Failed to create appointment: ${err.message}` });
+    }
+  }
+});
+
+app.get('/mentors', authenticateToken, async (req, res) => {
+  try {
+    const mentors = await prisma.mentor.findMany({
+      select: {
+        MentorID: true,
+        FirstName: true,
+        LastName: true,
+        Specialization: true,
+        Availability: true,
+        Email: true
+      }
+    });
+    res.json(mentors);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch mentors' });
   }
 });
 

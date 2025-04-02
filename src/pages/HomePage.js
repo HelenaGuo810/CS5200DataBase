@@ -1,10 +1,13 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../routes/Navigation/NavBar";
 import HeroSection from "../components/HeroSection";
 import Footer from "../components/footer/Footer";
 import "./HomePage.css";
 
 const HomePage = () => {
+  const navigate = useNavigate();
+
   return (
     <div>
       {/* Fixed Navbar (position: fixed in Navbar.css) */}
@@ -20,7 +23,7 @@ const HomePage = () => {
           <p>Manage your work, set goals, and track your progress.</p>
           <button
             className="modern-button black-button"
-            onClick={() => window.location.href = "/login"}
+            onClick={() => navigate('/login')}
           >
             Student Login
           </button>
@@ -31,7 +34,7 @@ const HomePage = () => {
           <p>Internal students can book 1-1 appointments with our tutors.</p>
           <button
             className="modern-button black-button"
-            onClick={() => window.location.href = "/appointment"}
+            onClick={() => navigate('/appointment')}
           >
             Appoint Now
           </button>
@@ -42,7 +45,7 @@ const HomePage = () => {
           <p>The forum for application is now open to the public!</p>
           <button
             className="modern-button black-button"
-            onClick={() => window.location.href = "/forum"}
+            onClick={() => navigate('/forum')}
           >
             Visit Community
           </button>
@@ -53,7 +56,7 @@ const HomePage = () => {
           <p>Explore study cases, stock images, and video tutorials.</p>
           <button
             className="modern-button black-button"
-            onClick={() => window.location.href = "/resources"}
+            onClick={() => navigate('/resources')}
           >
             Explore Resources
           </button>
